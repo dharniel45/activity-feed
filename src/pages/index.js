@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
-import '../App.css'
+import '../App.css';
 
 const erc721Transfers = gql`
   query TokenTransfers {
@@ -30,18 +30,23 @@ const erc721Transfers = gql`
 `;
 
 export default function Home(props) {
-  const { dataLoaded } = props;
+  const { dataLoaded, setDataLoaded } = props;
 
-  const { loading, error, data } = useQuery(erc721Transfers, {
-    skip: !dataLoaded,
-  });
+  const { loading, error, data, refetch } = useQuery(erc721Transfers);
+
+  useEffect(() => {
+    if (!loading && !error) {
+      setDataLoaded(true);
+    }
+  }, [loading, error]);
 
   if (!dataLoaded) {
-    return null; 
+    return 'Loading...'; 
   }
 
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+  if (error) {
+    return `Error! ${error.message}`; 
+  }
 
   const transfers = data.erc721Transfers.erc721Transfers;
 
@@ -71,7 +76,6 @@ export default function Home(props) {
           ))}
         </tbody>
       </table>
-    
     </div>
   );
 }
