@@ -18,7 +18,7 @@ function App(Component, pageProps) {
     <div className="App">
       
       <div className="App-header">
-        <h1 className='starter'>The Ultimate Activity Feed to track all your NFT projects</h1>
+        <h1 className='starter'>Keep track of all your NFT projects</h1>
         
         <div className="query">
         <button onClick={handleButtonClick}>Fetch Latest Data</button>
